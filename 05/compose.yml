@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  c1:
+    container_name: C1
+    build:
+      context: .
+      dockerfile: C1.dockerfile
+    tty: true
+    stdin_open: true
+    networks:
+      lab5-network:
+        ipv4_address: 172.20.0.10
+
+  c2:
+    container_name: C2
+    build:
+      context: .
+      dockerfile: C2.dockerfile
+    tty: true
+    stdin_open: true
+    networks:
+      lab5-network:
+        ipv4_address: 172.20.0.11
+
+  c3:
+    container_name: C3
+    build:
+      context: .
+      dockerfile: C3.dockerfile
+    tty: true
+    stdin_open: true
+    networks:
+      lab5-network:
+        ipv4_address: 172.20.0.12
+
+  c4-s1:
+    container_name: C4_S1
+    build:
+      context: .
+      dockerfile: C4.dockerfile
+    tty: true
+    stdin_open: true
+    network_mode: host
+    command: >
+      sh -c "
+        service ssh start &&
+        tail -f /dev/null
+      "
+
+
+networks:
+  lab5-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
